@@ -1,0 +1,18 @@
+#! /bin/bash
+# create floating ip pool for quantum
+NETWORK="<%= require 'ipaddr'; IPAddr.new(node[:auto][:external_ip] + "/" + IPAddr.new([:auto][:netmask]).to_i.to_s(2).count("1").to_s).to_s%>/<%= require 'ipaddr'; IPAddr.new(node[:auto][:netmask]).to_i.to_s(2).count("1") %>"
+POOL_BEGIN="<%= node[:auto][:external_ip] %>"
+POOL_END="<%= node[:auto][:external_ip] %>"
+GATEWAY="<%= node[:auto][:gateway] %>"
+
+export EDITOR=vi
+
+source /root/.bashrc
+ADMIN=$(keystone tenant-list | awk '/admin/{print $2}')
+exist=$(quantum net-list | grep -o "floating-pool")
+if [ -n "$exist" ] ; then
+echo "Already exists, doing nothing"
+else
+EXT_NET=$(quantum net-create --tenant-id $ADMIN floating-pool --router:external=True | awk '/ id /{print $4}')
+EXT_SUBNET=$(quantum subnet-create --tenant-id $ADMIN --allocation-pool start=$POOL_BEGIN,end=$POOL_END --gateway $GATEWAY floating-pool $NETWORK --enable_dhcp=False | awk '/ id /{print $4}')
+fi
