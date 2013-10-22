@@ -94,6 +94,7 @@ end
 [
     "keystone user-create --name=admin --pass=#{node[:creds][:admin_password]}",
     "keystone role-create --name=admin",
+    "keystone role-create --name=Member",
     "keystone tenant-create --name=admin",
     "keystone user-role-add --user admin --role-id admin --tenant-id admin"
 ].each do |cmd|

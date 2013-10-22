@@ -59,9 +59,9 @@ Attributes
     <td><tt>12c51e21fc2824fff5c5</tt></td>
   </tr>
   <tr>
-    <td><tt>[:creds][:quantum shared secret]</tt></td>
+    <td><tt>[:creds][:quantum_secret]</tt></td>
     <td>string</td>
-    <td>swift hash</td>
+    <td>quantum shared secret</td>
     <td><tt>c6c5de883bfd0ef30a71</tt></td>
   </tr>
   <tr>

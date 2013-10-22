@@ -36,7 +36,7 @@ centos_cloud_config "/etc/cinder/cinder.conf" do
              "keystone_authtoken admin_tenant_name admin",
              "keystone_authtoken admin_user admin",
              "keystone_authtoken admin_password " <<
-             "#{node[:creds][:admin_password]}",
+             node[:creds][:admin_password],
              # Mysql connection
              "DEFAULT sql_connection mysql://cinder:" <<
              "#{node[:creds][:mysql_password]}@localhost/cinder",

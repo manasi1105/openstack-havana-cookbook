@@ -10,7 +10,7 @@
                   "swift": "192.168.133.201",
                   "glance": "192.168.133.201",
                   "cinder": "192.168.133.201",
-                  "quantum": "192.168.133.201",
+                  "neutron": "192.168.133.201",
                   "nova": "192.168.133.201",
                   "heat": "192.168.133.201",
                   "ceilometer": "192.168.133.201"
@@ -21,9 +21,10 @@
                 "recipe[centos_cloud::swift-proxy]",
                 "recipe[centos_cloud::glance]",
                 "recipe[centos_cloud::cinder]",
-                "recipe[centos_cloud::quantum]",
+                "recipe[centos_cloud::neutron]",
                 "recipe[centos_cloud::nova]",
                 "recipe[centos_cloud::nova-compute]",
-		"recipe[centos_cloud::swift-node]"
+		"recipe[centos_cloud::swift-node]",
+                "recipe[centos_cloud::dashboard]"
                 ]
 }

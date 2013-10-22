@@ -17,11 +17,11 @@ cookbook_file "/etc/yum.repos.d/epel.repo" do
   group "root"
 end
 
-cookbook_file "/etc/yum.repos.d/epel-openstack-grizzly.repo" do
+cookbook_file "/etc/yum.repos.d/epel-openstack-havana.repo" do
   not_if do
-    File.exists?("/etc/yum.repos.d/epel-openstack-grizzly.repo")
+    File.exists?("/etc/yum.repos.d/epel-openstack-havana.repo")
   end
-  source "epel-openstack-grizzly.repo"
+  source "epel-openstack-havana.repo"
   mode "0644"
   owner "root"
   group "root"

@@ -12,56 +12,79 @@ include_recipe "centos_cloud::repos"
 include_recipe "centos_cloud::iptables-policy"
 include_recipe "libcloud"
 
-package "openstack-quantum-openvswitch" do
+package "openstack-neutron-openvswitch" do
         action :install
     end
 
 package "bridge-utils" do
-        action :install
+    action :install
 end
 
-link "/etc/quantum/plugin.ini" do
-  to "/etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini"
+service "openvswitch" do
+        action [:enable, :restart]
+end
+    
+link "/etc/neutron/plugin.ini" do
+  to "/etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini"
   link_type :symbolic
 end
 
-centos_cloud_config "/etc/quantum/plugin.ini" do
-    command ["DATABASE sql_connection mysql://quantum:#{node[:creds][:mysql_password]}@#{node[:ip][:quantum]}/quantum",
-             "SECURITYGROUP firewall_driver quantum.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver",
-             "OVS enable_tunneling True",
-             "OVS tenant_network_type gre",
+centos_cloud_config "/etc/neutron/plugin.ini" do
+    command ["DATABASE sql_connection mysql://neutron:#{node[:creds][:mysql_password]}@#{node[:ip][:neutron]}/neutron",
+             "SECURITYGROUP firewall_driver neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver",
+             "OVS tenant_network_type vlan",
+             "OVS network_vlan_ranges default:2000:3999",
              "OVS integration_bridge br-int",
-             "OVS tunnel_bridge br-tun",
-             "OVS tunnel_id_ranges 1:1000",
-             "OVS local_ip #{node[:ipaddress]}"]
+             "OVS bridge_mappings default:br-ex"]
 end
 
-centos_cloud_config "/etc/quantum/quantum.conf" do
+centos_cloud_config "/etc/neutron/neutron.conf" do
     command ["DEFAULT auth_strategy keystone",
-             "DEFAULT rpc_backend quantum.openstack.common.rpc.impl_qpid",
+             "DEFAULT rpc_backend neutron.openstack.common.rpc.impl_qpid",
              "DEFAULT qpid_hostname #{node[:ip][:qpid]}",
              "DEFAULT allow_overlapping_ips True",
-             "DEFAULT core_plugin quantum.plugins.openvswitch.ovs_quantum_plugin.OVSQuantumPluginV2",
+             "DEFAULT core_plugin neutron.plugins.openvswitch.ovs_neutron_plugin.OVSNeutronPluginV2",
+             "agent root_helper sudo neutron-rootwrap /etc/neutron/rootwrap.conf",
              "keystone_authtoken auth_host #{node[:ip][:keystone]}",
              "keystone_authtoken admin_tenant_name admin",
              "keystone_authtoken admin_user admin",
              "keystone_authtoken admin_password #{node[:creds][:admin_password]}"]
 end
 
-%w[openvswitch quantum-openvswitch-agent quantum-ovs-cleanup].each do |srv|
-    service srv do
-        action [:enable, :restart]
+
+package "iproute" do 
+  action :upgrade
+end
+#yum_package "iproute" do
+#    version "2.6.32-23.el6ost.netns.2"
+#end
+
+#yum_package "iproute" do
+#    version "2.6.32-23.el6_4.netns.1"
+#end
+
+#yum_package "iproute" do
+#    version "2.6.32-130.el6ost.netns.2"
+#end
+
+template "/etc/sysconfig/network-scripts/ifcfg-" + node[:auto][:external_nic]  do
+    not_if do
+        File.exists?("/etc/sysconfig/network-scripts/ifcfg-br-ex")
     end
+    owner "root"
+    group "root"
+    mode  "0644"
+    source "neutron/ifcfg-eth0.erb"
 end
 
-execute "ovs-vsctl add-br br-int" do
-    not_if("ovs-vsctl list-br | grep br-int")
-    action :run
-end
-
-simple_iptables_rule "quantum" do
-  rule "-p tcp -m multiport --dports 9696"
-  jump "ACCEPT"
+template "/etc/sysconfig/network-scripts/ifcfg-br-ex" do
+    not_if do
+        File.exists?("/etc/sysconfig/network-scripts/ifcfg-br-ex")
+    end
+    owner "root"
+    group "root"
+    mode  "0644"
+    source "neutron/ifcfg-br-ex.erb"
 end
 
 libcloud_file_append "/etc/sysconfig/network-scripts/ifcfg-br-int" do
@@ -70,6 +93,22 @@ libcloud_file_append "/etc/sysconfig/network-scripts/ifcfg-br-int" do
               "TYPE=OVSBridge",
               "ONBOOT=yes",
               "BOOTPROTO=none"]
+end
+
+service "network" do
+    action :restart
+end
+
+
+simple_iptables_rule "neutron" do
+  rule "-p tcp -m multiport --dports 9696"
+  jump "ACCEPT"
+end
+
+%w[neutron-openvswitch-agent neutron-ovs-cleanup].each do |srv|
+    service srv do
+        action [:enable, :restart]
+    end
 end
 
 
