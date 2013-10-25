@@ -69,6 +69,7 @@ centos_cloud_config "/etc/nova/nova.conf" do
         " #{node[:creds][:neutron_secret]}",
         "DEFAULT glance_api_servers #{node[:ip][:glance]}:9292",
         "spice agent_enabled True",
+        "spice enabled True",
         "spice html5proxy_base_url" <<
         " http://#{node[:ip][:nova]}:6082/spice_auto.html",
         "spice keymap en-us",

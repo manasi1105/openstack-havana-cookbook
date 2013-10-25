@@ -49,6 +49,7 @@ end
 centos_cloud_config "/etc/neutron/l3_agent.ini" do
     command ["DEFAULT interface_driver neutron.agent.linux.interface.OVSInterfaceDriver",
              "DEFAULT external_network_bridge br-ex",
+             "DEFAULT use_namespaces True",
              "DEFAULT ovs_use_veth True"]
 end
 
