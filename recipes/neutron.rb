@@ -15,6 +15,10 @@ include_recipe "centos_cloud::mysql"
 include_recipe "centos_cloud::openvswitch"
 include_recipe "centos_cloud::iptables-policy"
 
+package "kernel" do
+  action :upgrade
+end
+
 libcloud_ssh_keys node[:creds][:ssh_keypair] do
     data_bag "ssh_keypairs"    
     action [:create, :add] 
@@ -38,6 +42,7 @@ end
 centos_cloud_config "/etc/neutron/dhcp_agent.ini" do
     command ["DEFAULT enable_isolated_metadata True",
              "DEFAULT use_namespaces True",
+             "DEFAULT interface_driver neutron.agent.linux.interface.OVSInterfaceDriver",
              "DEFAULT ovs_use_veth True"]
 end
 

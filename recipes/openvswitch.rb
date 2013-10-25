@@ -44,7 +44,7 @@ centos_cloud_config "/etc/neutron/neutron.conf" do
              "DEFAULT qpid_hostname #{node[:ip][:qpid]}",
              "DEFAULT allow_overlapping_ips True",
              "DEFAULT core_plugin neutron.plugins.openvswitch.ovs_neutron_plugin.OVSNeutronPluginV2",
-             "agent root_helper sudo neutron-rootwrap /etc/neutron/rootwrap.conf",
+             "agent root_helper 'sudo neutron-rootwrap /etc/neutron/rootwrap.conf'",
              "keystone_authtoken auth_host #{node[:ip][:keystone]}",
              "keystone_authtoken admin_tenant_name admin",
              "keystone_authtoken admin_user admin",
@@ -55,17 +55,6 @@ end
 package "iproute" do 
   action :upgrade
 end
-#yum_package "iproute" do
-#    version "2.6.32-23.el6ost.netns.2"
-#end
-
-#yum_package "iproute" do
-#    version "2.6.32-23.el6_4.netns.1"
-#end
-
-#yum_package "iproute" do
-#    version "2.6.32-130.el6ost.netns.2"
-#end
 
 template "/etc/sysconfig/network-scripts/ifcfg-" + node[:auto][:external_nic]  do
     not_if do

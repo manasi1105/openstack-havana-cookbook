@@ -9,10 +9,10 @@ export EDITOR=vi
 
 source /root/.bashrc
 ADMIN=$(keystone tenant-list | awk '/admin/{print $2}')
-exist=$(quantum net-list | grep -o "floating-pool")
+exist=$(neutron net-list | grep -o "floating-pool")
 if [ -n "$exist" ] ; then
 echo "Already exists, doing nothing"
 else
-EXT_NET=$(quantum net-create --tenant-id $ADMIN floating-pool --router:external=True | awk '/ id /{print $4}')
-EXT_SUBNET=$(quantum subnet-create --tenant-id $ADMIN --allocation-pool start=$POOL_BEGIN,end=$POOL_END --gateway $GATEWAY floating-pool $NETWORK --enable_dhcp=False | awk '/ id /{print $4}')
+EXT_NET=$(neutron net-create --tenant-id $ADMIN floating-pool --router:external=True | awk '/ id /{print $4}')
+EXT_SUBNET=$(neutron subnet-create --tenant-id $ADMIN --allocation-pool start=$POOL_BEGIN,end=$POOL_END --gateway $GATEWAY floating-pool $NETWORK --enable_dhcp=False | awk '/ id /{print $4}')
 fi

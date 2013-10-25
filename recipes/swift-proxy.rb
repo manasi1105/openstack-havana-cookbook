@@ -34,7 +34,8 @@ centos_cloud_config "/etc/swift/proxy-server.conf" do
         "filter:authtoken auth_port 35357",
         "filter:authtoken auth_protocol http",
         "filter:authtoken auth_uri http://#{node[:ip][:keystone]}:5000",
-        "filter:keystone operator_roles admin,Member"
+        "filter:keystone operator_roles admin,Member",
+        "filter:ceilometer use egg:ceilometer#swift"
     ]
 end
 

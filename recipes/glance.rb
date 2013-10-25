@@ -54,6 +54,7 @@ centos_cloud_config "/etc/glance/glance-api.conf" do
              "DEFAULT swift_store_auth_address" <<
              " http://#{node[:ip][:keystone]}:5000/v2.0/",
              "DEFAULT swift_store_user admin:admin",
+             "DEFAULT notifier_strategy qpid",
              "DEFAULT swift_store_create_container_on_put True",
              "DEFAULT swift_store_key #{node[:creds][:admin_password]}"]
 end

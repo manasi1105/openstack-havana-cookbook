@@ -6,12 +6,32 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+include_recipe "tar"
 include_recipe "libcloud"
 include_recipe "selinux::disabled"
 include_recipe "centos_cloud::repos"
 include_recipe "centos_cloud::mysql"
 include_recipe "centos_cloud::iptables-policy"
 
+
+%w[
+  mod_wsgi httpd mod_ssl openstack-dashboard
+  memcached python-memcached
+].each do |pkg|
+  package pkg do
+    action :install
+  end
+end
+
+simple_iptables_rule "dashboard" do
+  rule "-p tcp -m multiport --dports 80,443"
+  jump "ACCEPT"
+end
+
+#BugFix
+execute "sed -i 's/DEBUG = False/DEBUG = True/' /etc/openstack-dashboard/local_settings" do
+    action :run
+end
 
 libcloud_ssh_keys node[:creds][:ssh_keypair] do
     data_bag "ssh_keypairs"    
@@ -94,16 +114,25 @@ execute "su nova -s /bin/sh -c 'nova-manage db sync'" do
     action :run
 end
 
+tar_extract "http://xenlet.stu.neva.ru/spice/spice-html5.tar.gz" do
+  target_dir "/usr/share/"
+end
+
+template "/etc/httpd/conf.d/spice.conf" do
+    owner "root"
+    group "root"
+    mode  "0644"
+    source "spice.conf.erb"
+end
+
 %w[
-    openstack-nova-novncproxy openstack-nova-api
+    openstack-nova-spicehtml5proxy openstack-nova-api
     openstack-nova-scheduler openstack-nova-conductor 
     openstack-nova-console openstack-nova-consoleauth
-    openstack-nova-spicehtml5proxy
+    httpd
 ].each do |srv|
     service srv do
     action [:enable, :restart]
     end
 end
-
-
 

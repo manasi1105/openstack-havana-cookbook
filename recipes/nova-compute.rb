@@ -10,11 +10,13 @@
 include_recipe "libcloud"
 include_recipe "selinux::disabled"
 include_recipe "centos_cloud::repos"
-#include_recipe "centos_cloud::openvswitch"
+include_recipe "centos_cloud::openvswitch"
 include_recipe "centos_cloud::iptables-policy"
 
-package "openstack-nova-compute" do
-    action :install
+%w[openstack-nova-compute openstack-ceilometer-compute].each do |pkg|
+  package pkg do
+      action :install
+  end
 end
 
 simple_iptables_rule "novnc" do
@@ -59,6 +61,10 @@ centos_cloud_config "/etc/nova/nova.conf" do
         "DEFAULT vncserver_listen 0.0.0.0",
         "DEFAULT resume_guests_state_on_host_boot true",
         "DEFAULT service_neutron_metadata_proxy True",
+        "DEFAULT instance_usage_audit true",
+        "DEFAULT notify_on_state_change vm_and_task_state",
+        "DEFAULT notification_driver nova.openstack.common.notifier.rpc_notifier",
+        "DEFAULT notification_driver ceilometer.compute.nova_driver",
         "DEFAULT neutron_metadata_proxy_shared_secret" <<
         " #{node[:creds][:neutron_secret]}",
         "DEFAULT glance_api_servers #{node[:ip][:glance]}:9292",
@@ -75,7 +81,13 @@ centos_cloud_config "/etc/nova/nova.conf" do
     ]
 end
 
-%w[libvirtd messagebus openstack-nova-compute].each do |srv|
+centos_cloud_config "/etc/ceilometer/ceilometer.conf" do
+  command "publisher_rpc metering_secret #{node[:creds][:ceilometer_secret]}"
+end
+
+%w[libvirtd messagebus openstack-nova-compute 
+   openstack-ceilometer-compute
+].each do |srv|
     service srv do
         action [:enable,:restart]
     end
