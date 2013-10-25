@@ -1,18 +1,27 @@
 centos_cloud Cookbook
 =====================
 
-This cookbook installs openstack "grizzly".
+This cookbook installs openstack "havana".
 
 Requirements
 ------------
 #### OS
 
-- CentOS 6.4 minimal
+- CentOS 6.4 minimal x86_64
+
+#### Interfaces
+
+- At least one network interface on controller and nodes
+
+#### LVM
+
+- Volume group for cinder 
 
 #### cookbooks
-- `simple_iptables` - centos-cloud needs simple_iptables to manage iptables.
-- `libcloud` -  centos-cloud needs libcloud to use scp, manage ssh-keys, etc.
-- `selinux` -centos-cloud needs selinux to disable selinux.
+- `simple_iptables` - centos_cloud needs simple_iptables to manage iptables.
+- `libcloud` -  centos_cloud needs libcloud to use scp, manage ssh-keys, etc.
+- `selinux` - centos_cloud needs selinux to disable selinux.
+- `tar` - centos_cloud needs tar to manage tar.gz
 
 #### databags
 - openstack 
