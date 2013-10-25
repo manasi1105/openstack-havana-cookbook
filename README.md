@@ -3,6 +3,17 @@ centos_cloud Cookbook
 
 This cookbook installs openstack "havana".
 
+quantum: vlan, openvswitch, namespaces
+compute: kvm
+glance: swift backend
+cinder: lvm driver
+
+includes:
+
+heat 
+ceilometer
+swift
+
 Requirements
 ------------
 #### OS
