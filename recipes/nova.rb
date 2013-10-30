@@ -125,6 +125,20 @@ template "/etc/httpd/conf.d/spice.conf" do
     source "spice.conf.erb"
 end
 
+cookbook_file "/usr/share/openstack-dashboard/static/dashboard/img/logo.png" do
+  source "logo.png"
+  mode "0755"
+  owner "root"
+  group "root"
+end
+
+cookbook_file "/usr/share/openstack-dashboard/static/dashboard/img/logo-splash.png" do
+  source "logo.png"
+  mode "0755"
+  owner "root"
+  group "root"
+end
+
 %w[
     openstack-nova-spicehtml5proxy openstack-nova-api
     openstack-nova-scheduler openstack-nova-conductor 

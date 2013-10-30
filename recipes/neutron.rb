@@ -43,7 +43,13 @@ centos_cloud_config "/etc/neutron/dhcp_agent.ini" do
     command ["DEFAULT enable_isolated_metadata True",
              "DEFAULT use_namespaces True",
              "DEFAULT interface_driver neutron.agent.linux.interface.OVSInterfaceDriver",
-             "DEFAULT ovs_use_veth True"]
+             "DEFAULT dnsmasq_dns_server 8.8.8.8",
+             "DEFAULT ovs_use_veth True",
+             "DEFAULT dnsmasq_config_file /etc/neutron/dnsmasq-neutron.conf"]
+end
+
+libcloud_file_append "/etc/neutron/dnsmasq-neutron.conf" do
+        line ["dhcp-option-force=26,1454"]
 end
 
 centos_cloud_config "/etc/neutron/l3_agent.ini" do
