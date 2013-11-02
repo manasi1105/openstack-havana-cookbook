@@ -35,9 +35,9 @@ default[:auto][:volume_group] = largest_vg
 default[:auto][:external_ip] = external_ip
 default[:auto][:external_nic] = external_iface
 default[:auto][:gateway] = node[:network][:default_gateway]
-default[:auto][:netmask] = node[:network][:interfaces][external_iface]\
-                               [:addresses][external_ip][:netmask]
-
+#default[:auto][:netmask] = node[:network][:interfaces][external_iface]\
+#                               [:addresses][external_ip][:netmask]
+default[:auto][:netmask] = "255.255.255.255"
 
 
 

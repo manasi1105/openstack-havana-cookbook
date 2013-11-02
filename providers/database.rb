@@ -7,6 +7,9 @@ GRANT ALL PRIVILEGES ON #{new_resource.name}.*
 TO '#{new_resource.name}'@'%' 
 IDENTIFIED BY '#{new_resource.password}';
 GRANT ALL PRIVILEGES ON #{new_resource.name}.* 
+TO '#{new_resource.name}'@'ve.hexaegypt.com' 
+IDENTIFIED BY '#{new_resource.password}';
+GRANT ALL PRIVILEGES ON #{new_resource.name}.* 
 TO '#{new_resource.name}'@'localhost' 
 IDENTIFIED BY '#{new_resource.password}';
 EOF
