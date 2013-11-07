@@ -7,5 +7,5 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "centos_cloud::nova-compute"
+include_recipe "centos_cloud::nova-compute-kvm"
 include_recipe "centos_cloud::swift-node"

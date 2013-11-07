@@ -1,5 +1,0 @@
-[epel-openstack-grizzly]
-name=OpenStack Folsom Repository for EPEL 6
-baseurl=http://repos.fedorapeople.org/repos/openstack/openstack-grizzly/epel-6
-enabled=1
-gpgcheck=0

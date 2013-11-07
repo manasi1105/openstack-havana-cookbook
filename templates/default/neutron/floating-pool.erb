@@ -1,8 +1,8 @@
 #! /bin/bash
 # create floating ip pool for quantum
-NETWORK="<%= require 'ipaddr'; IPAddr.new(node[:auto][:external_ip] + "/" + IPAddr.new([:auto][:netmask]).to_i.to_s(2).count("1").to_s).to_s%>/<%= require 'ipaddr'; IPAddr.new(node[:auto][:netmask]).to_i.to_s(2).count("1") %>"
-POOL_BEGIN="<%= node[:auto][:external_ip] %>"
-POOL_END="<%= node[:auto][:external_ip] %>"
+NETWORK="<%= IPAddr.new(node[:auto][:external_ip]).mask(node[:auto][:netmask]).to_s + '/' + IPAddr.new(node[:auto][:netmask]).to_i.to_s(2).count('1').to_s %>"
+POOL_BEGIN="<%= IPAddr.new(node[:auto][:external_ip]).succ %>"
+POOL_END="<%= def add(ip) ad = IPAddr.new(ip); 20.times {ad=ad.succ}; return ad.to_s end; add(node[:auto][:external_ip]) %>"
 GATEWAY="<%= node[:auto][:gateway] %>"
 
 export EDITOR=vi

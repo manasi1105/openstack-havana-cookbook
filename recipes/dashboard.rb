@@ -12,10 +12,9 @@ include_recipe "selinux::disabled"
 include_recipe "centos_cloud::repos"
 include_recipe "centos_cloud::iptables-policy"
 
-
 %w[
-  mod_wsgi httpd mod_ssl openstack-dashboard
-  memcached python-memcached
+mod_wsgi httpd mod_ssl openstack-dashboard
+memcached python-memcached
 ].each do |pkg|
   package pkg do
     action :install
@@ -30,9 +29,4 @@ end
 service "httpd" do
   action [:enable, :start]
 end
-
-
-
-
-
 
