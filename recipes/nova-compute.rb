@@ -10,7 +10,7 @@
 include_recipe "libcloud"
 include_recipe "selinux::disabled"
 include_recipe "centos_cloud::repos"
-include_recipe "centos_cloud::openvswitch"
+#include_recipe "centos_cloud::openvswitch"
 include_recipe "centos_cloud::iptables-policy"
 
 %w[openstack-nova-compute openstack-ceilometer-compute].each do |pkg|
