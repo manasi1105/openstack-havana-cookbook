@@ -9,7 +9,7 @@ libcloud_ssh_keys node[:creds][:ssh_keypair] do
 end
 
 %w[ nagios nagios-plugins-all nagios-plugins-nrpe nrpe
-ganglia ganglia-gmond].each do |pkg|
+ganglia ganglia-gmondssh].each do |pkg|
   package pkg do
     action :install
   end
@@ -30,6 +30,7 @@ template "/tmp/newhost.cfg" do
 end
 
 libcloud_file_scp "/tmp/newhost.cfg" do
+  action :upload
   server node[:ip][:monitoring]
   remote_path "/etc/nagios/conf.d/host-#{node[:auto][:external_ip]}.cfg"
 end
