@@ -9,7 +9,7 @@ libcloud_ssh_keys node[:creds][:ssh_keypair] do
 end
 
 %w[ nagios nagios-plugins-all nagios-plugins-nrpe nrpe
-ganglia ganglia-gmondssh].each do |pkg|
+ganglia ganglia-gmond].each do |pkg|
   package pkg do
     action :install
   end
