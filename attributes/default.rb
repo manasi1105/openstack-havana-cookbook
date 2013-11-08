@@ -12,7 +12,6 @@ vg.run_command
 vg.error!
 largest_vg  = vg.stdout[0..-2]
 
-
 default[:creds][:admin_password]  = "mySuperSecret"
 default[:creds][:mysql_password]  = "r00tSqlPass"
 default[:creds][:keystone_token]  = "c6c5de883bfd0ef30a71"
@@ -31,6 +30,7 @@ default[:ip][:neutron]      = node[:ip][:controller]
 default[:ip][:nova]         = node[:ip][:controller]
 default[:ip][:heat]         = node[:ip][:controller]
 default[:ip][:ceilometer]   = node[:ip][:controller]
+default[:ip][:monitoring]   = node[:ip][:controller]
 default[:ip][:esxi]         = "192.168.250.100"
 
 default[:auto][:volume_group] = largest_vg
@@ -38,8 +38,5 @@ default[:auto][:external_ip] = external_ip
 default[:auto][:external_nic] = external_iface
 default[:auto][:gateway] = node[:network][:default_gateway]
 default[:auto][:netmask] = node[:network][:interfaces][external_iface]\
-                               [:addresses][external_ip][:netmask]
-
-
-
+[:addresses][external_ip][:netmask]
 

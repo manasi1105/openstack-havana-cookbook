@@ -6,6 +6,6 @@ description      'Installs/Configures openstack cloudstructure based on CentOS 6
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.2.1'
 %w{ simple_iptables libcloud selinux tar}.each do |depend|
-    depends depend
+  depends depend
 end
 supports "centos"

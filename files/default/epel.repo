@@ -4,3 +4,10 @@ mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
 enabled=1
 gpgcheck=0
 
+#[unsapp]
+#name=unsapp
+#baseurl=http://springdale.math.ias.edu/data/puias/unsupported/6/x86_64/
+#enabled=1
+#gpgcheck=0
+
+
