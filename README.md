@@ -1,5 +1,6 @@
 Jumpstart
 ==========
+Bootstrap script installs knife-solo, downloads necessary cookbooks from git and starts All-in-one installation process 
 
 1. Install CentOS 6.4 minimal http://mirror.yandex.ru/centos/6.4/isos/x86_64/CentOS-6.4-x86_64-minimal.iso
    
