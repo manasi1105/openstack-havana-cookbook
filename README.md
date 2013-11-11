@@ -24,6 +24,7 @@ Jumpstart
   
   swift-init main restart
   ```
+  Don't forget to mount it in fstab.
 
 centos_cloud Cookbook
 =====================
