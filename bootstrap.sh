@@ -21,5 +21,5 @@ git clone https://github.com/laboshinl/simple_iptables.git ~/pilgrim/cookbooks/s
 git clone https://github.com/laboshinl/selinux.git ~/pilgrim/cookbooks/selinux
 git clone https://github.com/laboshinl/tar.git ~/pilgrim/cookbooks/tar
 cd ~/pilgrim
-echo '{"run_list":["recipe[centos_cloud::repos]"]}' > nodes/localhost.json
+echo '{"run_list":["recipe[centos_cloud]"]}' > nodes/localhost.json
 knife solo bootstrap localhost
