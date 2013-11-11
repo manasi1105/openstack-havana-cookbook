@@ -8,7 +8,10 @@ rpm -Uvh http://rbel.co/rbel6
 yum -y install ruby19 ruby-devel rubygems git openssh-clients rubygem-mime-types
 gem install --no-rdoc --no-ri knife-solo knife-solo_data_bag json
 knife solo init ~/pilgrim
+if [ ! -f ~/.ssh/id_rsa ]
+then
 ssh-keygen -q -t rsa -f ~/.ssh/cloud_key -N ""
+fi
 if [ ! -f ~/.ssh/id_rsa ]
 then
 ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""
