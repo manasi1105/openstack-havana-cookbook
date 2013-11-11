@@ -3,11 +3,6 @@ include_recipe "selinux::disabled"
 include_recipe "centos_cloud::repos"
 include_recipe "centos_cloud::iptables-policy"
 
-libcloud_ssh_keys node[:creds][:ssh_keypair] do
-  data_bag "ssh_keypairs"
-  action [:create, :add]
-end
-
 %w[expect nagios php httpd
 ganglia ganglia-gmetad ganglia-web].each do |pkg|
   package pkg do
@@ -15,15 +10,16 @@ ganglia ganglia-gmetad ganglia-web].each do |pkg|
   end
 end
 
-simple_iptables_rule "nagios" do
-  rule "-p tcp -m multiport --dports 80,5666"
+simple_iptables_rule "monitoring-server" do
+  rule "-p tcp -m multiport --dports 80,25,8652,8651,8649,111,8655"
   jump "ACCEPT"
 end
 
-simple_iptables_rule "ganglia" do
-  rule "-p tcp -m multiport --dports 8652,8649"
+simple_iptables_rule "monitoring-server" do
+  rule "-p udp -m multiport --dports 8649"
   jump "ACCEPT"
 end
+
 
 template "/tmp/expect" do
   source "monitoring/expect.erb"

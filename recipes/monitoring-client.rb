@@ -15,6 +15,11 @@ ganglia ganglia-gmond].each do |pkg|
   end
 end
 
+simple_iptables_rule "nagios" do
+  rule "-p tcp -m multiport --dports 5666"
+  jump "ACCEPT"
+end
+
 template "/etc/ganglia/gmond.conf" do
   source "monitoring/gmond.conf.erb"
   owner "root"
