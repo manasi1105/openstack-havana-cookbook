@@ -49,7 +49,7 @@ end
 end
 
 centos_cloud_config "/etc/glance/glance-api.conf" do
-  command ["DEFAULT default_store swift",
+  command ["DEFAULT default_store file",
     "DEFAULT swift_store_auth_address" <<
     " http://#{node[:ip][:keystone]}:5000/v2.0/",
     "DEFAULT swift_store_user admin:admin",
