@@ -7,6 +7,7 @@ rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.r
 rpm -Uvh http://rbel.co/rbel6
 yum -y install ruby19 ruby-devel rubygems git openssh-clients rubygem-mime-types make gcc
 gem install --no-rdoc --no-ri knife-solo knife-solo_data_bag json
+knife configure --defaults -y -r .defaults
 knife solo init ~/pilgrim
 if [ ! -f ~/.ssh/id_rsa ]
 then
