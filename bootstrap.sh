@@ -5,10 +5,16 @@ exit 1
 fi
 rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 rpm -Uvh http://rbel.co/rbel6
-yum -y install ruby19 ruby-devel rubygems git openssh-clients rubygem-mime-types
-gem install --no-rdoc --no-ri knife-solo knife-solo_data_bag json
+yum -y install ruby19 ruby-devel rubygems git openssh-clients rubygem-mime-types make gcc
+gem install --no-rdoc --no-ri chef 
+gem install --no-rdoc --no-ri knife-solo
+gem install --no-rdoc --no-ri knife-solo_data_bag json
+knife configure --defaults -y -r .defaults
 knife solo init ~/pilgrim
+if [ ! -f ~/.ssh/id_rsa ]
+then
 ssh-keygen -q -t rsa -f ~/.ssh/cloud_key -N ""
+fi
 if [ ! -f ~/.ssh/id_rsa ]
 then
 ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""
@@ -21,5 +27,5 @@ git clone https://github.com/laboshinl/simple_iptables.git ~/pilgrim/cookbooks/s
 git clone https://github.com/laboshinl/selinux.git ~/pilgrim/cookbooks/selinux
 git clone https://github.com/laboshinl/tar.git ~/pilgrim/cookbooks/tar
 cd ~/pilgrim
-echo '{"run_list":["recipe[centos_cloud::repos]"]}' > nodes/localhost.json
+echo '{"run_list":["recipe[centos_cloud]"]}' > nodes/localhost.json
 knife solo bootstrap localhost

@@ -1,3 +1,32 @@
+Jumpstart
+==========
+Bootstrap script installs knife-solo, downloads necessary cookbooks from git and starts All-in-one installation process 
+
+1. Install CentOS 6.4 minimal http://mirror.yandex.ru/centos/6.4/isos/x86_64/CentOS-6.4-x86_64-minimal.iso
+   
+   **Note.** LVM volume group is required for cinder. Use logical volumes during installation or create your own VG before processing
+  
+
+2. Execute as root user
+
+  ``` console
+  curl -s https://raw.github.com/laboshinl/openstack-havana-cookbook/master/bootstrap.sh | bash
+  ```
+
+3. Reboot
+4. Change addreses in /root/floating-pool.sh and run it to create neutron external network
+5. All done! Go to http://ipaddress/dashboard  login: **admin** password: **mySuperSecret**
+
+  **Note.** Swift will not work until you mount any disk at /srv/node/device. 
+  ```
+  mount /dev/your_disk /srv/node/device
+
+  chown swift.swift /srv/node/device
+  
+  swift-init main restart
+  ```
+  Don't forget to mount it in fstab.
+
 centos_cloud Cookbook
 =====================
 
