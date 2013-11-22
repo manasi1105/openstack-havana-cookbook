@@ -2,11 +2,12 @@
 
 This file is used to list changes made in each version of centos-cloud.
 
-## 0.1.0:
+## 0.2.2:
 
-* Initial release of centos-cloud
+* Swift partition mount
 
-- - -
-Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
+## 0.2.3:
 
-The [Github Flavored Markdown page](http://github.github.com/github-flavored-markdown/) describes the differences between markdown on github and standard markdown.
+* Password gen
+
+

@@ -1,4 +1,5 @@
 require "socket"
+require 'securerandom'
 
 external_ip  = UDPSocket.open {|s| s.connect("8.8.8.8", 1); s.addr.last}
 
@@ -12,11 +13,11 @@ vg.run_command
 vg.error!
 largest_vg  = vg.stdout[0..-2]
 
-default[:creds][:admin_password]  = "mySuperSecret"
-default[:creds][:mysql_password]  = "r00tSqlPass"
-default[:creds][:keystone_token]  = "c6c5de883bfd0ef30a71"
-default[:creds][:swift_hash]      = "12c51e21fc2824fff5c5"
-default[:creds][:neutron_secret]  = "c6c5de883bfd0ef30a71"
+default[:creds][:admin_password]  = SecureRandom.urlsafe_base64(8)
+default[:creds][:mysql_password]  = SecureRandom.urlsafe_base64(8)
+default[:creds][:keystone_token]  = SecureRandom.urlsafe_base64(20)
+default[:creds][:swift_hash]      = SecureRandom.urlsafe_base64(20)
+default[:creds][:neutron_secret]  = SecureRandom.urlsafe_base64(20)
 default[:creds][:ssh_keypair]     = "openstack"
 default[:creds][:esxi_password]   = "mySuperSecret"
 

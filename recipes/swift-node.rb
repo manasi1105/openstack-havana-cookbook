@@ -7,6 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 include_recipe "libcloud"
+include_recipe "lvm"
 include_recipe "selinux::disabled"
 include_recipe "centos_cloud::repos"
 include_recipe "centos_cloud::iptables-policy"
@@ -38,6 +39,13 @@ end
   end
 end
 
+lvm_logical_volume "swift" do 
+  group node[:auto][:volume_group]
+  size '25%VG' 
+  filesystem 'xfs' 
+  mount_point '/srv/node/device/' 
+end 
+  
 simple_iptables_rule "swift-node" do
   rule "-p tcp -m multiport --dports 6000,6001,6002,873"
   jump "ACCEPT"

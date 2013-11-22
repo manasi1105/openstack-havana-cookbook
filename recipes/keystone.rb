@@ -32,8 +32,11 @@ centos_cloud_database "keystone" do
 end
 
 # Install package
-package "openstack-keystone" do
-  action :install
+#%w[openstack-keystone python-paste-deploy pyhton-six].each do |pkg|
+%w[openstack-keystone python-paste-deploy].each do |pkg|
+  package pkg do
+    action :install
+  end
 end
 
 # Configure service

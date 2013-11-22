@@ -51,8 +51,10 @@ centos_cloud_config "/etc/neutron/neutron.conf" do
     "keystone_authtoken admin_password #{node[:creds][:admin_password]}"]
 end
 
-package "iproute" do
-  action :upgrade
+%w[iproute kernel].each do |pkg|
+  package pkg do
+    action :upgrade
+  end
 end
 
 template "/etc/sysconfig/network-scripts/ifcfg-" + node[:auto][:external_nic]  do
