@@ -64,7 +64,7 @@ centos_cloud_config "/etc/nova/nova.conf" do
     "DEFAULT instance_usage_audit true",
     "DEFAULT notify_on_state_change vm_and_task_state",
     "DEFAULT notification_driver nova.openstack.common.notifier.rpc_notifier",
-    "DEFAULT notification_driver ceilometer.compute.nova_driver",
+    "DEFAULT notification_driver ceilometer.compute.nova_nova_notifier",
     "DEFAULT neutron_metadata_proxy_shared_secret" <<
     " #{node[:creds][:neutron_secret]}",
     "DEFAULT glance_api_servers #{node[:ip][:glance]}:9292",

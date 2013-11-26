@@ -43,6 +43,7 @@ end
 
 %w[openstack-nova-api openstack-nova-scheduler
 openstack-nova-conductor openstack-nova-console
+openstack-nova-cert
 ].each do |pkg|
   package pkg do
     action :install
@@ -142,6 +143,7 @@ end
 openstack-nova-spicehtml5proxy openstack-nova-api
 openstack-nova-scheduler openstack-nova-conductor
 openstack-nova-console openstack-nova-consoleauth
+openstack-nova-cert
 httpd
 ].each do |srv|
   service srv do
