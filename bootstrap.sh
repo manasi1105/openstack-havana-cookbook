@@ -26,6 +26,7 @@ git clone https://github.com/laboshinl/libcloud.git ~/pilgrim/cookbooks/libcloud
 git clone https://github.com/laboshinl/simple_iptables.git ~/pilgrim/cookbooks/simple_iptables
 git clone https://github.com/laboshinl/selinux.git ~/pilgrim/cookbooks/selinux
 git clone https://github.com/laboshinl/tar.git ~/pilgrim/cookbooks/tar
+git clone https://github.com/laboshinl/lvm.git ~/pilgrim/cookbooks/lvm
 cd ~/pilgrim
 echo '{"run_list":["recipe[centos_cloud]"]}' > nodes/localhost.json
 knife solo bootstrap localhost
