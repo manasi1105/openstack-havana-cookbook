@@ -41,8 +41,7 @@ end
 
 %w[httpd nagios gmetad].each do |srv|
   service srv do
-    ignore_failure true
-    action [:enable, :restart]
+    action [:start, :enable, :restart]
   end
 end
 

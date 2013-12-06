@@ -57,14 +57,14 @@ centos_cloud_config "/etc/nova/nova.conf" do
     "DEFAULT enabled_apis ec2,osapi_compute,metadata",
     "DEFAULT novncproxy_base_url" <<
     " http://#{node[:ip][:nova]}:6080/vnc_auto.html",
-    "DEFAULT vncserver_proxyclient_address #{node[:ipaddress]}",
-    "DEFAULT vncserver_listen 0.0.0.0",
+    "DEFAULT vncserver_proxyclient_address 127.0.0.1",
+    "DEFAULT vncserver_listen 127.0.0.1",
     "DEFAULT resume_guests_state_on_host_boot true",
     "DEFAULT service_neutron_metadata_proxy True",
     "DEFAULT instance_usage_audit true",
     "DEFAULT notify_on_state_change vm_and_task_state",
     "DEFAULT notification_driver nova.openstack.common.notifier.rpc_notifier",
-    "DEFAULT notification_driver ceilometer.compute.nova_nova_notifier",
+    "DEFAULT notification_driver ceilometer.compute.nova_notifier",
     "DEFAULT neutron_metadata_proxy_shared_secret" <<
     " #{node[:creds][:neutron_secret]}",
     "DEFAULT glance_api_servers #{node[:ip][:glance]}:9292",
@@ -73,8 +73,8 @@ centos_cloud_config "/etc/nova/nova.conf" do
     "spice html5proxy_base_url" <<
     " http://#{node[:ip][:nova]}:6082/spice_auto.html",
     "spice keymap en-us",
-    "spice server_listen 0.0.0.0",
-    "spice server_proxyclient_address #{node[:ipaddress]}",
+    "spice server_listen 127.0.0.1",
+    "spice server_proxyclient_address 127.0.0.1",
     "keystone_authtoken admin_tenant_name admin",
     "keystone_authtoken admin_user admin",
     "keystone_authtoken admin_password #{node[:creds][:admin_password]}",

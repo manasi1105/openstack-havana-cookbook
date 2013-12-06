@@ -40,12 +40,16 @@ libcloud_file_scp "/tmp/newhost.cfg" do
   remote_path "/etc/nagios/conf.d/host-#{node[:auto][:external_ip]}.cfg"
 end
 
+libcloud_ssh_command "service nagios start" do
+  server node[:ip][:monitoring]
+end
+
 libcloud_ssh_command "service nagios restart" do
   server node[:ip][:monitoring]
 end
 
 %w[nagios gmond nrpe].each do |srv|
   service srv do
-    action [:enable, :restart]
+    action [:start, :enable, :restart]
   end
 end

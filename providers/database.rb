@@ -9,6 +9,9 @@ IDENTIFIED BY '#{new_resource.password}';
 GRANT ALL PRIVILEGES ON #{new_resource.name}.* 
 TO '#{new_resource.name}'@'localhost' 
 IDENTIFIED BY '#{new_resource.password}';
+GRANT ALL PRIVILEGES ON #{new_resource.name}.* 
+TO '#{new_resource.name}'@'plis-server' 
+IDENTIFIED BY '#{new_resource.password}';
 EOF
     CODE
   end
