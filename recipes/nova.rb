@@ -43,16 +43,13 @@ end
 
 %w[openstack-nova-api openstack-nova-scheduler
 openstack-nova-conductor openstack-nova-console
-openstack-nova-cert
+openstack-nova-cert openstack-nova-novncproxy novnc
 ].each do |pkg|
   package pkg do
     action :install
   end
 end
 
-#centos_cloud_config "/etc/nova/api-paste.ini" do
-#    command "filter:authtoken signing_dir /var/lib/nova/keystone-signing"
-#end
 
 centos_cloud_config "/etc/nova/nova.conf" do
   command [
@@ -81,10 +78,10 @@ centos_cloud_config "/etc/nova/nova.conf" do
     "DEFAULT enabled_apis ec2,osapi_compute,metadata",
     "DEFAULT novncproxy_base_url" <<
     " http://#{node[:ip][:nova]}:6080/vnc_auto.html",
-    "DEFAULT vnc_enabled False",
+    "DEFAULT vnc_enabled True",
     "DEFAULT vncserver_proxyclient_address #{node[:ipaddress]}",
     "DEFAULT vncserver_listen 0.0.0.0",
-    "spice enabled True",
+    "spice enabled False",
     "spice html5proxy_base_url" <<
     " http://#{node[:ipaddress]}:6082/spice_auto.html",
     "spice keymap en-us",
@@ -114,16 +111,16 @@ execute "su nova -s /bin/sh -c 'nova-manage db sync'" do
   action :run
 end
 
-tar_extract "http://xenlet.stu.neva.ru/spice/spice-html5.tar.gz" do
-  target_dir "/usr/share/"
-end
+#tar_extract "http://xenlet.stu.neva.ru/spice/spice-html5.tar.gz" do
+#  target_dir "/usr/share/"
+#end
 
-template "/etc/httpd/conf.d/spice.conf" do
-  owner "root"
-  group "root"
-  mode  "0644"
-  source "spice.conf.erb"
-end
+#template "/etc/httpd/conf.d/spice.conf" do
+#  owner "root"
+#  group "root"
+#  mode  "0644"
+#  source "spice.conf.erb"
+#end
 
 cookbook_file "/usr/share/openstack-dashboard/static/dashboard/img/logo.png" do
   source "logo.png"
@@ -140,9 +137,9 @@ cookbook_file "/usr/share/openstack-dashboard/static/dashboard/img/logo-splash.p
 end
 
 %w[
-openstack-nova-spicehtml5proxy openstack-nova-api
+ openstack-nova-api
 openstack-nova-scheduler openstack-nova-conductor
-openstack-nova-console openstack-nova-consoleauth
+openstack-nova-console openstack-nova-consoleauth openstack-nova-novncproxy
 openstack-nova-cert
 httpd
 ].each do |srv|

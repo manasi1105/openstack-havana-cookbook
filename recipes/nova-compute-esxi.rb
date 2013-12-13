@@ -33,6 +33,7 @@ centos_cloud_config "/etc/nova/nova.conf" do
   command [
     "DEFAULT sql_connection" <<
     " mysql://nova:#{node[:creds][:mysql_password]}@#{node[:ip][:nova]}/nova",
+    "DEFAULT neutron_ovs_bridge \"#{node[:vmware][:port_group]}\"",
     "DEFAULT rpc_backend nova.openstack.common.rpc.impl_qpid",
     "DEFAULT qpid_hostname #{node[:ip][:qpid]}",
     "DEFAULT network_api_class nova.network.neutronv2.api.API",
@@ -64,12 +65,12 @@ centos_cloud_config "/etc/nova/nova.conf" do
     "DEFAULT instance_usage_audit true",
     "DEFAULT notify_on_state_change vm_and_task_state",
     "DEFAULT notification_driver nova.openstack.common.notifier.rpc_notifier",
-    "DEFAULT notification_driver ceilometer.compute.nova_driver",
+    "DEFAULT notification_driver ceilometer.compute.nova_notifier",
     "DEFAULT neutron_metadata_proxy_shared_secret" <<
     " #{node[:creds][:neutron_secret]}",
     "DEFAULT glance_api_servers #{node[:ip][:glance]}:9292",
-    "spice agent_enabled True",
-    "spice enabled True",
+    "spice agent_enabled False",
+    "spice enabled False",
     "spice html5proxy_base_url" <<
     " http://#{node[:ip][:nova]}:6082/spice_auto.html",
     "spice keymap en-us",
@@ -79,11 +80,12 @@ centos_cloud_config "/etc/nova/nova.conf" do
     "keystone_authtoken admin_user admin",
     "keystone_authtoken admin_password #{node[:creds][:admin_password]}",
     "keystone_authtoken auth_host #{node[:ip][:keystone]}",
-    "vmware host_ip #{node[:ip][:esxi]}",
-    "vmware host_username root",
-    "vmvare host_password #{node[:creds][:esxi_password]}",
-    "vmware wsdl_location=https://#{node[:ip][:esxi]}/sdk/vimService.wsdl"
-  ]
+    "DEFAULT compute_driver #{node[:auto][:compute_driver]}",
+    "vmware host_ip #{node[:vmware][:host]}",
+    "vmware host_username #{node[:vmware][:user]}",
+    "vmware host_password #{node[:vmware][:password]}",
+    "vmware wsdl_location #{node[:vmware][:wsdl_loc]}",
+    "vmware integration_bridge \"#{node[:vmware][:port_group]}\""]
 end
 
 centos_cloud_config "/etc/ceilometer/ceilometer.conf" do

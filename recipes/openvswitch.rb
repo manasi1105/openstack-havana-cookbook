@@ -32,17 +32,13 @@ end
 centos_cloud_config "/etc/neutron/plugin.ini" do
   command ["DATABASE sql_connection mysql://neutron:#{node[:creds][:mysql_password]}@#{node[:ip][:neutron]}/neutron",
     "SECURITYGROUP firewall_driver neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver",
-    "OVS tenant_network_type vlan",
-    "OVS network_vlan_ranges default:2000:3999",
-    "OVS integration_bridge br-int",
-    "OVS bridge_mappings default:br-ex"]
+    "OVS bridge_mappings physnet1:br-ex "]
 end
 
 centos_cloud_config "/etc/neutron/neutron.conf" do
   command ["DEFAULT auth_strategy keystone",
     "DEFAULT rpc_backend neutron.openstack.common.rpc.impl_qpid",
     "DEFAULT qpid_hostname #{node[:ip][:qpid]}",
-    "DEFAULT allow_overlapping_ips True",
     "DEFAULT core_plugin neutron.plugins.openvswitch.ovs_neutron_plugin.OVSNeutronPluginV2",
     "agent root_helper 'sudo neutron-rootwrap /etc/neutron/rootwrap.conf'",
     "keystone_authtoken auth_host #{node[:ip][:keystone]}",
@@ -51,11 +47,11 @@ centos_cloud_config "/etc/neutron/neutron.conf" do
     "keystone_authtoken admin_password #{node[:creds][:admin_password]}"]
 end
 
-%w[iproute kernel].each do |pkg|
-  package pkg do
-    action :upgrade
-  end
-end
+#%w[iproute kernel].each do |pkg|
+#  package pkg do
+#    action :upgrade
+#  end
+#end
 
 template "/etc/sysconfig/network-scripts/ifcfg-" + node[:auto][:external_nic]  do
   not_if do

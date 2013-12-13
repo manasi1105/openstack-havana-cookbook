@@ -18,6 +18,7 @@ libcloud_ssh_keys node[:creds][:ssh_keypair] do
   action [:create, :add]
 end
 
+
 # Create database for cinder
 centos_cloud_database "cinder" do
   password node[:creds][:mysql_password]
@@ -45,8 +46,11 @@ centos_cloud_config "/etc/cinder/cinder.conf" do
     # Message broker
     "DEFAULT rpc_backend cinder.openstack.common.rpc.impl_qpid",
     "DEFAULT qpid_hostname #{node[:ip][:qpid]}",
-    # Volume group
-    "DEFAULT volume_group #{node[:auto][:volume_group]}"]
+    "DEFAULT volume_driver #{node[:auto][:volume_driver]}",
+    "DEFAULT vmware_host_ip #{node[:vmware][:host]}",
+    "DEFAULT vmware_host_username #{node[:vmware][:user]}",
+    "DEFAULT vmware_host_password #{node[:vmware][:password]}",
+    "DEFAULT vmware_wsdl_location #{node[:vmware][:wsdl_loc]}"]
 end
 
 centos_cloud_config "/etc/cinder/api-paste.ini" do
