@@ -23,7 +23,7 @@ simple_iptables_rule "mysql" do
   jump "ACCEPT"
 end
 
-execute "mysqladmin -uroot password '#{node[:creds][:mysql_password]}'" do
+execute "mysqladmin -u root password '#{node[:creds][:mysql_password]}'" do
   ignore_failure true
   action :run
 end
