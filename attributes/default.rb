@@ -13,11 +13,11 @@ vg.run_command
 vg.error!
 largest_vg  = vg.stdout[0..-2]
 
-default[:creds][:admin_password]  = SecureRandom.urlsafe_base64(8)
-default[:creds][:mysql_password]  = SecureRandom.urlsafe_base64(8)
-default[:creds][:keystone_token]  = SecureRandom.urlsafe_base64(20)
+default[:creds][:admin_password]  = "ADMIN_PASS"
+default[:creds][:mysql_password]  = "SQL_DBPASS"
+default[:creds][:keystone_token]  = "KEYSTONE_DBPASS"
 default[:creds][:swift_hash]      = SecureRandom.urlsafe_base64(20)
-default[:creds][:neutron_secret]  = SecureRandom.urlsafe_base64(20)
+default[:creds][:neutron_secret]  = "NEUTRON_DBPASS"
 default[:creds][:ssh_keypair]     = "openstack"
 default[:creds][:esxi_password]   = "mySuperSecret"
 
