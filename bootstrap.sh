@@ -21,7 +21,7 @@ ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""
 fi
 cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 knife solo data bag create ssh_keypairs openstack --json "$(ruby19 -rjson -e 'puts JSON.generate({"id"=>"openstack","private_key" => File.read("/root/.ssh/cloud_key"), "public_key" => File.read("/root/.ssh/cloud_key.pub")})')" --data-bag-path ~/pilgrim/data_bags
-git clone https://github.com/laboshinl/openstack-havana-cookbook.git ~/pilgrim/cookbooks/centos_cloud
+git clone https://github.com/manasi1105/openstack-havana-cookbook.git ~/pilgrim/cookbooks/centos_cloud
 git clone https://github.com/laboshinl/libcloud.git ~/pilgrim/cookbooks/libcloud
 git clone https://github.com/laboshinl/simple_iptables.git ~/pilgrim/cookbooks/simple_iptables
 git clone https://github.com/laboshinl/selinux.git ~/pilgrim/cookbooks/selinux
