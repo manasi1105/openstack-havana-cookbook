@@ -27,9 +27,9 @@ libcloud_ssh_keys node[:creds][:ssh_keypair] do
 end
 
 # Install MySQL, create database
-#centos_cloud_database "keystone" do
-#  password node[:creds][:mysql_password]
-#end
+centos_cloud_database "keystone" do
+  password node[:creds][:mysql_password]
+end
 
 
 
@@ -52,10 +52,10 @@ centos_cloud_config "/etc/keystone/keystone.conf" do
 end
 
 # Populate keystone database
-execute "openstack-db --init --service keystone --password #{node[:creds][:mysql_password]}" do
-  ignore_failure true
-  action :run
-end
+#execute "openstack-db --init --service keystone --password #{node[:creds][:mysql_password]}" do
+#  ignore_failure true
+#  action :run
+#end
 
 
 # Template for creating services and endpoints
@@ -87,8 +87,13 @@ end
 #  action :run
 #end
 
+# Populate keystone database
+execute "su keystone -s /bin/sh -c 'keystone-manage db_sync'" do
+  action :run
+end
+
 # Generate certs
-execute "keystone-manage pki_setup" do
+execute "su keystone -s /bin/sh -c keystone-manage pki_setup" do
   action :run
 end
 
