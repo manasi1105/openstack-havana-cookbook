@@ -74,12 +74,12 @@ directory "/etc/keystone/ssl" do
 end
 
 # Populate keystone database
-execute "su keystone -s /bin/sh -c 'keystone-manage db_sync'" do
+execute "openstack-db --init --service keystone --password SQL_DBPASS" do
   action :run
 end
 
 # Generate certs
-execute "su keystone -s /bin/sh -c 'keystone-manage pki_setup'" do
+execute "keystone-manage pki_setup" do
   action :run
 end
 
