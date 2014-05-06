@@ -31,11 +31,6 @@ end
 #  password node[:creds][:mysql_password]
 #end
 
-# Populate keystone database
-execute "openstack-db --init --service keystone --password" do
-  password node[:creds][:mysql_password]
-  action :run
-end
 
 
 # Install package
@@ -55,6 +50,12 @@ centos_cloud_config "/etc/keystone/keystone.conf" do
     "catalog driver keystone.catalog.backends.templated.TemplatedCatalog"
   ]
 end
+
+# Populate keystone database
+execute "openstack-db --init --service keystone --password node[:creds][:mysql_password]" do
+  action :run
+end
+
 
 # Template for creating services and endpoints
 template "/etc/keystone/default_catalog.templates" do
