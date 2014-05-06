@@ -53,6 +53,7 @@ end
 
 # Populate keystone database
 execute "openstack-db --init --service keystone --password #{node[:creds][:mysql_password]}" do
+  ignore_failure true
   action :run
 end
 
