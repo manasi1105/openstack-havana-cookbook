@@ -27,9 +27,16 @@ libcloud_ssh_keys node[:creds][:ssh_keypair] do
 end
 
 # Install MySQL, create database
-centos_cloud_database "keystone" do
+#centos_cloud_database "keystone" do
+#  password node[:creds][:mysql_password]
+#end
+
+# Populate keystone database
+execute "openstack-db --init --service keystone --password" do
   password node[:creds][:mysql_password]
+  action :run
 end
+
 
 # Install package
 #%w[openstack-keystone python-paste-deploy pyhton-six].each do |pkg|
@@ -74,9 +81,9 @@ directory "/etc/keystone/ssl" do
 end
 
 # Populate keystone database
-execute "openstack-db --init --service keystone --password SQL_DBPASS" do
-  action :run
-end
+#execute "openstack-db --init --service keystone --password SQL_DBPASS" do
+#  action :run
+#end
 
 # Generate certs
 execute "keystone-manage pki_setup" do
